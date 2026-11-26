@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HALZ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="HALZ: gameplay, lives, comunidade e momentos que merecem ser compartilhados.">
+<meta property="og:title" content="HALZ">
+<meta property="og:description" content="Gameplay, lives, comunidade e momentos que merecem ser compartilhados.">
+<meta name="theme-color" content="#0a0909">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  /* Layout: cabeçalho fixo, hero em duas colunas (texto + moldura de overlay de stream),
+     faixa de plataformas, três blocos de conteúdo, apoio em faixa vermelha, comunidade, rodapé.
+     Visual escuro por escolha (identidade do canal), vermelho como única cor de destaque. */
+  :root{
+    --bg:#0a0909;
+    --surface:#131110;
+    --surface-2:#1b1817;
+    --line:rgba(255,236,230,.11);
+    --grid:rgba(255,236,230,.035);
+    --fg:#f4efec;
+    --muted:#a8a09b;
+    --dim:#8c837f;
+    --red:#e1262f;
+    --red-btn:#d11f29;
+    --red-hot:#ff4450;
+    --font-display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+    --font-body:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --max:1160px;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:41;background:#0a0909}
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:2px solid var(--red-hot);outline-offset:3px}
+  .bg{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(60% 50% at 82% 6%,rgba(225,38,47,.17),transparent 70%),radial-gradient(50% 40% at 6% 92%,rgba(225,38,47,.08),transparent 70%)}
+  .bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:linear-gradient(to bottom,#000,transparent 75%);mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+  .wrap{width:100%;max-width:var(--max);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+  /* Cabeçalho */
+  .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(10,9,9,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
+  .logo{font-family:var(--font-display);font-weight:900;font-size:36px;line-height:1;letter-spacing:-.01em}
+  .logo span{color:var(--red)}
+  .navlinks{display:flex;align-items:center;gap:26px;font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .navlinks a{transition:color .2s}
+  .navlinks a:hover{color:var(--fg)}
+  .navlinks .nav-cta{border:1px solid rgba(225,38,47,.65);padding:10px 14px;border-radius:4px;color:var(--fg);background:rgba(225,38,47,.12);transition:background .2s}
+  .navlinks .nav-cta:hover{background:rgba(225,38,47,.28)}
+  .menu{display:none;align-items:center;justify-content:center;width:44px;height:44px;background:none;border:1px solid var(--line);border-radius:4px;color:var(--fg);cursor:pointer}
+
+  /* Botões */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:15px 22px;border-radius:4px;border:1px solid transparent;font-family:var(--font-mono);font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:transform .2s,background .2s,box-shadow .2s,border-color .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--red-btn);color:#fff;box-shadow:0 8px 28px rgba(225,38,47,.22)}
+  .btn-primary:hover{background:var(--red);box-shadow:0 10px 34px rgba(225,38,47,.38)}
+  .btn-ghost{border-color:var(--line);background:var(--surface);color:var(--fg)}
+  .btn-ghost:hover{background:var(--surface-2);border-color:rgba(255,236,230,.22)}
+  .btn[aria-disabled="true"]{opacity:.55;cursor:not-allowed;pointer-events:none}
+
+  /* Hero */
+  .hero{padding-block:76px 88px}
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:48px;align-items:center}
+  .eyebrow{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red-hot)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 14px var(--red);flex:none}
+  h1{margin:20px 0 22px;font-family:var(--font-display);font-weight:900;font-size:clamp(64px,11vw,136px);line-height:.86;letter-spacing:-.01em;text-transform:uppercase}
+  h1 .outline{color:transparent;-webkit-text-stroke:2px var(--fg)}
+  .lead{max-width:48ch;margin:0;color:var(--muted);font-size:17px}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+
+  .stage{position:relative;container-type:inline-size;width:100%;aspect-ratio:16/11;border:1px solid var(--line);border-radius:6px;background:linear-gradient(160deg,#1d1918,#0c0a0a 70%);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+  .stage::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 4px)}
+  .stage::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(225,38,47,.22),transparent 72%)}
+  .ring{position:absolute;left:50%;top:46%;width:56cqw;height:56cqw;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(225,38,47,.4);box-shadow:0 0 60px rgba(225,38,47,.18),inset 0 0 50px rgba(225,38,47,.1)}
+  .mono-h{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:1;font-family:var(--font-display);font-weight:900;font-size:200px;font-size:60cqw;line-height:.8;color:var(--red);text-shadow:0 0 40px rgba(225,38,47,.45)}
+  .hud{position:absolute;z-index:2;top:20px;left:46px;right:46px;display:flex;justify-content:space-between;gap:12px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.14em;color:#d3cac6}
+  .hud span{display:flex;align-items:center;gap:8px;white-space:nowrap}
+  .c{position:absolute;z-index:2;width:20px;height:20px;border:2px solid var(--red-hot)}
+  .c.tl{top:14px;left:14px;border-right:0;border-bottom:0}
+  .c.tr{top:14px;right:14px;border-left:0;border-bottom:0}
+  .c.bl{bottom:14px;left:14px;border-right:0;border-top:0}
+  .c.br{bottom:14px;right:14px;border-left:0;border-top:0}
+  .lower{position:absolute;z-index:2;left:0;bottom:11%;display:flex;align-items:stretch}
+  .lower b{display:flex;align-items:center;padding:6px 16px;background:var(--red-btn);font-family:var(--font-display);font-weight:900;font-size:26px;letter-spacing:.02em}
+  .lower span{display:flex;align-items:center;padding:6px 14px;background:rgba(0,0,0,.74);border:1px solid var(--line);border-left:0;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;white-space:nowrap}
+
+  /* Faixa de plataformas */
+  .strip{border-block:1px solid var(--line);background:rgba(255,255,255,.015)}
+  .strip-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 28px;padding-block:20px}
+  .strip-label{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+  .platforms{display:flex;flex-wrap:wrap;gap:10px 28px;font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .platforms a{transition:color .2s}
+  .platforms a:hover{color:var(--fg)}
+  .platforms a span{color:var(--red-hot);margin-left:4px}
+
+  /* Seções */
+  section{padding-block:96px;scroll-margin-top:72px}
+  .section-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 40px;margin-bottom:38px}
+  .kicker{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red-hot)}
+  h2{margin:12px 0 0;font-family:var(--font-display);font-weight:800;font-size:clamp(46px,7vw,80px);line-height:.9;letter-spacing:-.005em;text-transform:uppercase;text-wrap:balance}
+  .section-head p{max-width:42ch;margin:0;color:var(--muted)}
+
+  .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .card{display:flex;flex-direction:column;min-width:0;padding:28px;border:1px solid var(--line);border-radius:6px;background:linear-gradient(150deg,var(--surface-2),var(--surface));transition:border-color .25s,transform .25s}
+  .card:hover{border-color:rgba(225,38,47,.55);transform:translateY(-4px)}
+  .card-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:4px;border:1px solid rgba(225,38,47,.35);background:rgba(225,38,47,.1);color:var(--red-hot)}
+  .card-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .card h3{margin:22px 0 10px;font-family:var(--font-display);font-weight:800;font-size:32px;line-height:1;letter-spacing:.005em;text-transform:uppercase}
+  .card p{margin:0;color:var(--muted);font-size:15px}
+  .card-link{margin-top:auto;padding-top:24px;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg)}
+  .card-link span{color:var(--red-hot);margin-left:6px}
+
+  /* Apoio */
+  .support{background:linear-gradient(110deg,rgba(225,38,47,.14),transparent 62%);border-block:1px solid var(--line)}
+  .support-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+  .support-copy p{max-width:48ch;margin:22px 0 28px;color:var(--muted)}
+  .amounts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .amount{padding:22px 18px;border:1px solid var(--line);border-radius:6px;background:var(--surface);text-align:center;transition:border-color .2s,background .2s,transform .2s}
+  .amount:hover{border-color:var(--red);background:rgba(225,38,47,.1);transform:translateY(-2px)}
+  .amount strong{display:block;font-family:var(--font-display);font-weight:800;font-size:44px;line-height:1}
+  .amount small{display:block;margin-top:8px;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .amount.custom{grid-column:1/-1;padding:18px;background:var(--red-btn);border-color:var(--red-btn);font-family:var(--font-mono);font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+  .amount.custom:hover{background:var(--red)}
+  .amounts-note{grid-column:1/-1;margin:2px 0 0;font-size:13px;color:var(--dim)}
+
+  /* Comunidade */
+  .community{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .community-box{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;min-width:0;padding:30px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+  .community-box h3{margin:0 0 6px;font-family:var(--font-display);font-weight:800;font-size:34px;line-height:1;text-transform:uppercase}
+  .community-box p{margin:0;color:var(--muted);font-size:15px}
+  .community-box .btn{padding:13px 16px;white-space:nowrap}
+
+  /* Rodapé */
+  .footer{padding-block:34px;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--dim)}
+  .footer-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px}
+  .footer-logo{font-family:var(--font-display);font-weight:900;font-size:26px;line-height:1;letter-spacing:-.01em;color:var(--fg)}
+  .footer-logo span{color:var(--red)}
+  .social-mini{display:flex;gap:20px}
+  .social-mini a:hover{color:var(--fg)}
+
+  @media (prefers-reduced-motion:no-preference){
+    .dot{animation:pulse 2s ease-in-out infinite}
+    .stage{animation:drift 7s ease-in-out infinite}
+    @keyframes pulse{50%{opacity:.35}}
+    @keyframes drift{50%{transform:translateY(-8px)}}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .btn,.card,.amount{transition:none}
+  }
+
+  @media (max-width:900px){
+    .hero{padding-block:48px 60px}
+    .hero-grid,.support-grid{grid-template-columns:minmax(0,1fr);gap:40px}
+    .cards,.community{grid-template-columns:minmax(0,1fr)}
+    section{padding-block:68px}
+  }
+  @media (max-width:760px){
+    .menu{display:inline-flex}
+    .navlinks{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;padding:8px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px));background:#0b0a0a;border-bottom:1px solid var(--line)}
+    .navlinks.open{display:flex}
+    .navlinks a{padding:14px 0;border-bottom:1px solid var(--line)}
+    .navlinks .nav-cta{margin-top:14px;padding:14px;text-align:center}
+  }
+  @media (max-width:520px){
+    .hud{left:40px;right:40px;top:18px}
+    .hud .hud-r{display:none}
+    .actions .btn{flex:1 1 100%}
+    .community-box{padding:22px}
+    .amount strong{font-size:38px}
+  }
+</style>
+
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="logo" href="#home" aria-label="HALZ, início">halz<span>.</span></a>
+    <nav class="navlinks" id="navlinks" aria-label="Principal">
+      <a href="#sobre">Sobre</a>
+      <a href="#conteudo">Conteúdo</a>
+      <a href="#apoie">Apoie</a>
+      <a href="#comunidade">Comunidade</a>
+      <a class="nav-cta" href="https://www.twitch.tv/0halz" target="_blank" rel="noopener noreferrer">Assistir na Twitch</a>
+    </nav>
+    <button class="menu" id="menu" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="navlinks">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path id="menu-path" d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home" style="padding-top:76px">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><span class="dot"></span>Gameplay · Lives · Comunidade</div>
+        <h1>Play.<br><span class="outline">Live.</span><br>Repeat.</h1>
+        <p class="lead">Gameplay, resenha e momentos insanos. Chega junto, acompanha as lives e faz parte da comunidade HALZ.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://www.twitch.tv/0halz" target="_blank" rel="noopener noreferrer">Assistir na Twitch</a>
+          <a class="btn btn-ghost" href="#apoie">Apoiar o canal</a>
+        </div>
+      </div>
+      <div class="stage" role="img" aria-label="Moldura de overlay de stream com a letra H e o nome HALZ">
+        <span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span>
+        <div class="hud"><span><i class="dot"></i>0HALZ</span><span class="hud-r">TWITCH.TV/0HALZ</span></div>
+        <div class="ring"></div>
+        <div class="mono-h">H</div>
+        <div class="lower"><b>HALZ</b><span>GAMEPLAY · LIVES</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap strip-inner">
+      <div class="strip-label">Onde me encontrar</div>
+      <div class="platforms">
+        <a href="https://www.twitch.tv/0halz" target="_blank" rel="noopener noreferrer">Twitch<span>↗</span></a>
+        <a href="https://youtube.com/@0halz" target="_blank" rel="noopener noreferrer">YouTube<span>↗</span></a>
+        <a href="https://www.tiktok.com/@0halz" target="_blank" rel="noopener noreferrer">TikTok<span>↗</span></a>
+      </div>
+    </div>
+  </div>
+
+  <section id="sobre">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="kicker">O canal</div><h2>Mais que<br>uma live.</h2></div>
+        <p>Um espaço para jogar, trocar ideia, rir das plays duvidosas e construir uma comunidade. Você faz parte disso.</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12a4 4 0 0 1 4 4v1.2a2.8 2.8 0 0 1-5 1.7L15 13H9l-2 1.9a2.8 2.8 0 0 1-5-1.7V12a4 4 0 0 1 4-4z"/><path d="M8 10v3M6.5 11.5h3"/><path d="M16 10.5h.01M18 12.5h.01"/></svg></div>
+          <h3>Gameplay</h3>
+          <p>Jogos, desafios e exploração. Às vezes a gameplay dá muito certo. Às vezes dá muito errado.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+          <h3>Ao vivo</h3>
+          <p>Momentos espontâneos, conversa com o chat e experiências compartilhadas em tempo real.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.5 0 4.5 2 4.5 4.5"/></svg></div>
+          <h3>Comunidade</h3>
+          <p>Um lugar para quem acompanha, participa e manda ideia para as próximas aventuras.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="conteudo" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="kicker">Onde acontece</div><h2>Conteúdo e<br>gameplay</h2></div>
+        <p>Perdeu uma live? Veja os vídeos e os cortes e acompanhe os próximos conteúdos.</p>
+      </div>
+      <div class="cards">
+        <a class="card" href="https://www.twitch.tv/0halz" target="_blank" rel="noopener noreferrer">
+          <div class="card-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></div>
+          <h3>Lives</h3>
+          <p>Entre na transmissão, participe do chat e acompanhe a gameplay ao vivo.</p>
+          <div class="card-link">Assistir na Twitch<span>↗</span></div>
+        </a>
+        <a class="card" href="https://youtube.com/@0halz" target="_blank" rel="noopener noreferrer">
+          <div class="card-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9v6l5-3z"/></svg></div>
+          <h3>Vídeos</h3>
+          <p>Vídeos completos, melhores momentos e conteúdo para ver quando quiser.</p>
+          <div class="card-link">Abrir o YouTube<span>↗</span></div>
+        </a>
+        <a class="card" href="https://www.tiktok.com/@0halz" target="_blank" rel="noopener noreferrer">
+          <div class="card-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5 20 18M8.5 16.5 20 6"/></svg></div>
+          <h3>Cortes</h3>
+          <p>Os momentos mais engraçados, as plays inesperadas e os highlights das transmissões.</p>
+          <div class="card-link">Ver no TikTok<span>↗</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="support" id="apoie">
+    <div class="wrap support-grid">
+      <div class="support-copy">
+        <div class="kicker">Fortaleça a comunidade</div>
+        <h2>Apoie o<br>HALZ.</h2>
+        <p>Se você curte o conteúdo e quer fortalecer as lives, qualquer apoio é bem-vindo. Ele ajuda a melhorar o setup e a trazer mais conteúdo para a comunidade.</p>
+        <a class="btn btn-primary" href="https://livepix.gg/halz" target="_blank" rel="noopener noreferrer">Apoiar agora</a>
+      </div>
+      <div class="amounts">
+        <a class="amount" href="https://livepix.gg/halz?amount=5" target="_blank" rel="noopener noreferrer"><strong>R$ 5</strong><small>via LivePix</small></a>
+        <a class="amount" href="https://livepix.gg/halz?amount=10" target="_blank" rel="noopener noreferrer"><strong>R$ 10</strong><small>via LivePix</small></a>
+        <a class="amount" href="https://livepix.gg/halz?amount=25" target="_blank" rel="noopener noreferrer"><strong>R$ 25</strong><small>via LivePix</small></a>
+        <a class="amount" href="https://livepix.gg/halz?amount=50" target="_blank" rel="noopener noreferrer"><strong>R$ 50</strong><small>via LivePix</small></a>
+        <a class="amount custom" href="https://livepix.gg/halz" target="_blank" rel="noopener noreferrer">Valor personalizado ↗</a>
+        <p class="amounts-note">Se o valor não vier preenchido, é só digitar na página do LivePix.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="comunidade">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="kicker">Cola com a gente</div><h2>Faça parte.</h2></div>
+        <p>Entre na comunidade e acompanhe tudo de perto.</p>
+      </div>
+      <div class="community">
+        <div class="community-box">
+          <div><h3>Discord</h3><p>Conversa, encontra a galera e fica por dentro.</p></div>
+          <span class="btn btn-ghost" aria-disabled="true">Em breve</span>
+        </div>
+        <div class="community-box">
+          <div><h3>Redes sociais</h3><p>Novidades, clips e bastidores do HALZ.</p></div>
+          <a class="btn btn-ghost" href="https://www.tiktok.com/@0halz" target="_blank" rel="noopener noreferrer">Acompanhar no TikTok ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <a class="footer-logo" href="#home" aria-label="HALZ, voltar ao topo">halz<span>.</span></a>
+    <span>© <span id="year">2026</span> HALZ · PLAY. LIVE. REPEAT.</span>
+    <div class="social-mini">
+      <a href="https://www.twitch.tv/0halz" target="_blank" rel="noopener noreferrer">Twitch</a>
+      <a href="https://youtube.com/@0halz" target="_blank" rel="noopener noreferrer">YouTube</a>
+      <a href="https://www.tiktok.com/@0halz" target="_blank" rel="noopener noreferrer">TikTok</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('menu');
+  var nav = document.getElementById('navlinks');
+  var path = document.getElementById('menu-path');
+  var OPEN = 'M5 5l14 14M19 5L5 19';
+  var CLOSED = 'M4 7h16M4 12h16M4 17h16';
+  function setOpen(open) {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    path.setAttribute('d', open ? OPEN : CLOSED);
+  }
+  btn.addEventListener('click', function () { setOpen(!nav.classList.contains('open')); });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+  document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
